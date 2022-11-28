@@ -279,8 +279,8 @@ func TestListAccountsAPI(t *testing.T) {
 	}
 
 	type Query struct {
-		pageID   int
-		pageSize int
+		pageNumber int
+		pageSize   int
 	}
 
 	testCases := []struct {
@@ -293,8 +293,8 @@ func TestListAccountsAPI(t *testing.T) {
 		{
 			name: "OK",
 			query: Query{
-				pageID:   1,
-				pageSize: n,
+				pageNumber: 1,
+				pageSize:   n,
 			},
 			setupAuth: func(t *testing.T, request *http.Request, tokenMaker token.Maker) {
 				addAuthorization(t, request, tokenMaker, authorizationTypeBearer, user.Username, time.Minute)
@@ -319,8 +319,8 @@ func TestListAccountsAPI(t *testing.T) {
 		{
 			name: "NoAuthorization",
 			query: Query{
-				pageID:   1,
-				pageSize: n,
+				pageNumber: 1,
+				pageSize:   n,
 			},
 			setupAuth: func(t *testing.T, request *http.Request, tokenMaker token.Maker) {
 			},
@@ -336,8 +336,8 @@ func TestListAccountsAPI(t *testing.T) {
 		{
 			name: "InternalError",
 			query: Query{
-				pageID:   1,
-				pageSize: n,
+				pageNumber: 1,
+				pageSize:   n,
 			},
 			setupAuth: func(t *testing.T, request *http.Request, tokenMaker token.Maker) {
 				addAuthorization(t, request, tokenMaker, authorizationTypeBearer, user.Username, time.Minute)
@@ -353,10 +353,10 @@ func TestListAccountsAPI(t *testing.T) {
 			},
 		},
 		{
-			name: "InvalidPageID",
+			name: "InvalidPageNumber",
 			query: Query{
-				pageID:   -1,
-				pageSize: n,
+				pageNumber: -1,
+				pageSize:   n,
 			},
 			setupAuth: func(t *testing.T, request *http.Request, tokenMaker token.Maker) {
 				addAuthorization(t, request, tokenMaker, authorizationTypeBearer, user.Username, time.Minute)
@@ -373,8 +373,8 @@ func TestListAccountsAPI(t *testing.T) {
 		{
 			name: "InvalidPageSize",
 			query: Query{
-				pageID:   1,
-				pageSize: 100000,
+				pageNumber: 1,
+				pageSize:   100000,
 			},
 			setupAuth: func(t *testing.T, request *http.Request, tokenMaker token.Maker) {
 				addAuthorization(t, request, tokenMaker, authorizationTypeBearer, user.Username, time.Minute)
@@ -409,7 +409,7 @@ func TestListAccountsAPI(t *testing.T) {
 
 			// Add query parameters to request URL
 			q := request.URL.Query()
-			q.Add("page_id", fmt.Sprintf("%d", tc.query.pageID))
+			q.Add("page_number", fmt.Sprintf("%d", tc.query.pageNumber))
 			q.Add("page_size", fmt.Sprintf("%d", tc.query.pageSize))
 			request.URL.RawQuery = q.Encode()
 
