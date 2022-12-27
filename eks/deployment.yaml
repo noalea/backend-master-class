@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: simple-bank-api-deployment
+  namespace: simplebank-prod
   labels:
     app: simple-bank-api
 spec:
@@ -16,7 +17,7 @@ spec:
     spec:
       containers:
       - name: simple-bank-api
-        image: 520894604546.dkr.ecr.us-east-1.amazonaws.com/simplebank:7529732b31c52ac3a092625d48e82e140132f465
+        image: 520894604546.dkr.ecr.us-east-1.amazonaws.com/simplebank:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
